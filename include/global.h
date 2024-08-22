@@ -2,7 +2,7 @@
  * @Author: runwiththewind23 19945243142@163.com
  * @Date: 2024-08-22 11:22:46
  * @LastEditors: runwiththewind23 19945243142@163.com
- * @LastEditTime: 2024-08-22 13:13:21
+ * @LastEditTime: 2024-08-22 19:45:36
  * @FilePath: /My_Redis/include/global.h
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置
  * 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
@@ -64,7 +64,7 @@ static std::unordered_map<std::string, enum Command> commandMaps = {  //命令�
     {"hset", HSET},     {"hget", HGET},     {"hdel", HDEL},
     {"hkeys", HKEYS},   {"hvals", HVALS}};
 
-static std::vector<std::string> split(const std::string &s,
+/*static std::vector<std::string> split(const std::string &s,
                                       char delimiter = ' ') {
   std::vector<std::string> tokens;
   std::string token;
@@ -74,5 +74,5 @@ static std::vector<std::string> split(const std::string &s,
   }
   return tokens;
 }
-
+*/
 #endif

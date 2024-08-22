@@ -281,11 +281,11 @@ void buttonrpc::as_server(int port) {
 }
 
 void buttonrpc::send(zmq::message_t& data) {
-  m_socket->send(data);  //发送数据
+  m_socket->send(data, zmq::send_flags::none);  //发送数据
 }
 
 void buttonrpc::recv(zmq::message_t& data) {
-  m_socket->recv(&data);  //接收数据
+  m_socket->recv(data, zmq::recv_flags::none);  //接收数据
 }
 
 inline void buttonrpc::set_timeout(uint32_t ms) {
@@ -363,7 +363,6 @@ inline void buttonrpc::callproxy(F fun, S* s, Serializer* pr, const char* data,
   callproxy_(fun, s, pr, data, len);
 }
 
-#pragma region 区分返回值
 // help call return value type is void function ,c++11的模板参数类型约束
 template <typename R, typename F>
 typename std::enable_if<std::is_same<R, void>::value,
@@ -378,7 +377,6 @@ typename std::enable_if<!std::is_same<R, void>::value,
 call_helper(F f) {
   return f();
 }
-#pragma endregion
 
 template <typename R>
 void buttonrpc::callproxy_(std::function<R()> func, Serializer* pr,

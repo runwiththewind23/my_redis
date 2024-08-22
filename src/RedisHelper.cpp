@@ -251,7 +251,7 @@ std::string RedisHelper::mset(std::vector<std::string>& items) {
   if (items.size() % 2 != 0) {
     return "wrong number of arguments for MSET.";
   }
-  for (int i = 0; i < items.size(); i += 2) {
+  for (auto i = 0u; i < items.size(); i += 2) {
     std::string key = items[i];
     std::string value = items[i + 1];
     set(key, value);
@@ -270,7 +270,7 @@ std::string RedisHelper::mget(std::vector<std::string>& keys) {
   }
   std::vector<std::string> values;
   std::string res = "";
-  for (int i = 0; i < keys.size(); i++) {
+  for (auto i = 0u; i < keys.size(); i++) {
     std::string& key = keys[i];
     std::string value = "";
     auto currentNode = redisDataBase->searchItem(key);
@@ -382,7 +382,6 @@ std::string RedisHelper::rpush(const std::string& key,
 std::string RedisHelper::lpop(const std::string& key) {
   auto currentNode = redisDataBase->searchItem(key);
   std::string resMessage = "";
-  int size = 0;
   if (currentNode == nullptr ||
       currentNode->value.type() != RedisValue::ARRAY) {
     resMessage = "(nil)";
@@ -398,7 +397,6 @@ std::string RedisHelper::lpop(const std::string& key) {
 std::string RedisHelper::rpop(const std::string& key) {
   auto currentNode = redisDataBase->searchItem(key);
   std::string resMessage = "";
-  int size = 0;
   if (currentNode == nullptr ||
       currentNode->value.type() != RedisValue::ARRAY) {
     resMessage = "(nil)";
@@ -416,17 +414,14 @@ std::string RedisHelper::lrange(const std::string& key,
                                 const std::string& end) {
   auto currentNode = redisDataBase->searchItem(key);
   std::string resMessage = "";
-  int size = 0;
   if (currentNode == nullptr ||
       currentNode->value.type() != RedisValue::ARRAY) {
     resMessage = "(nil)";
   } else {
     RedisValue::array& valueList = currentNode->value.arrayItems();
-    int left = std::stoi(start);
-    int right = std::stoi(end);
-    left = std::max(left, 0);
-    right = std::min(right, int(valueList.size() - 1));
-    if (right < left || left >= valueList.size()) {
+    auto left = std::max(std::stoi(start), 0);
+    auto right = std::min(std::stoi(end), int(valueList.size() - 1));
+    if (right < left || (long unsigned int)left >= valueList.size()) {
       resMessage = "(empty list or set)";
     }
     for (int i = left; i <= right; i++) {
@@ -456,7 +451,7 @@ std::string RedisHelper::hset(const std::string& key,
     std::map<std::string, RedisValue> data;
     RedisValue redisHash(data);
     RedisValue::object& valueMap = redisHash.objectItems();
-    for (int i = 0; i < filed.size(); i += 2) {
+    for (auto i = 0u; i < filed.size(); i += 2) {
       std::string hkey = filed[i];
       RedisValue hval = filed[i + 1];
       if (!valueMap.count(hkey)) {
@@ -472,7 +467,7 @@ std::string RedisHelper::hset(const std::string& key,
       return resMessage;
     } else {
       RedisValue::object& valueMap = currentNode->value.objectItems();
-      for (int i = 0; i < filed.size(); i += 2) {
+      for (auto i = 0u; i < filed.size(); i += 2) {
         std::string hkey = filed[i];
         RedisValue hval = filed[i + 1];
         if (!valueMap.count(hkey)) {
@@ -490,7 +485,6 @@ std::string RedisHelper::hget(const std::string& key,
                               const std::string& filed) {
   auto currentNode = redisDataBase->searchItem(key);
   std::string resMessage = "";
-  int count = 0;
   if (currentNode == nullptr ||
       currentNode->value.type() != RedisValue::OBJECT) {
     resMessage = "(nil)";
@@ -528,7 +522,6 @@ std::string RedisHelper::hdel(const std::string& key,
 std::string RedisHelper::hkeys(const std::string& key) {
   auto currentNode = redisDataBase->searchItem(key);
   std::string resMessage = "";
-  int count = 0;
   if (currentNode == nullptr) {
     resMessage = "The key:" + key + " " + "does not exist!";
     return resMessage;
@@ -553,7 +546,6 @@ std::string RedisHelper::hkeys(const std::string& key) {
 std::string RedisHelper::hvals(const std::string& key) {
   auto currentNode = redisDataBase->searchItem(key);
   std::string resMessage = "";
-  int count = 0;
   if (currentNode == nullptr) {
     resMessage = "The key:" + key + " " + "does not exist!";
     return resMessage;

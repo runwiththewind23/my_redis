@@ -2,6 +2,7 @@
 #define REDISHELPER_H
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "RedisValue.h"
@@ -18,6 +19,9 @@ class RedisHelper {
   std::string dataBaseIndex = "0";  //当前数据库索引
   std::shared_ptr<SkipList<std::string, RedisValue>> redisDataBase =
       std::make_shared<SkipList<std::string, RedisValue>>();  //数据库
+  std::unordered_map<double, RedisValue> valueScoreMap;
+  std::mutex mutex;
+
  public:
   RedisHelper();
   ~RedisHelper();
@@ -102,6 +106,9 @@ class RedisHelper {
                    const std::vector<std::string> &filed);
   std::string hkeys(const std::string &key);
   std::string hvals(const std::string &key);
+  //set操作
+  //SADD: 添加元素
+
 };
 
 #endif
