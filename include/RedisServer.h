@@ -37,8 +37,7 @@ class RedisServer {
   std::queue<std::string> commandsQueue;  //事物指令队列
 
  private:
-  RedisServer(int port = 5555,
-              const std::string &logoFilePath = MY_PROJECT_DIR_LOGO);
+  RedisServer(int port = 5555);
   static void signalHandler(int sig);
   void printLogo();
   void printStartMessage();

@@ -6,16 +6,9 @@ RedisServer* RedisServer::getInstance() {
 }
 
 void RedisServer::printLogo() {
-  std::ifstream ifs(logoFilePath);
-  if (!ifs.is_open()) {
-    std::cout << "logoFilePath不存在" << std::endl;
-  }
-  std::string line = "";
-  while (std::getline(ifs, line)) {
-    replaceText(line, "PORT", std::to_string(port));
-    replaceText(line, "PTHREAD_ID", std::to_string(pid));
-    std::cout << line << std::endl;
-  }
+  std::cout << "PORT: " << std::to_string(port) << std::endl;
+  std::cout << "PTHREAD_ID: " << std::to_string(pid) << std::endl;
+  std::cout << std::endl;
 }
 
 void RedisServer::printStartMessage() {
@@ -232,9 +225,7 @@ void RedisServer::signalHandler(int sig) {
   }
 }
 
-RedisServer::RedisServer(int port, const std::string& logoFilePath)
-    : port(port),
-      logoFilePath(logoFilePath),
-      flyweightFactory(new ParserFlyweightFactory()) {
+RedisServer::RedisServer(int port)
+    : port(port), flyweightFactory(new ParserFlyweightFactory()) {
   pid = getpid();
 }
