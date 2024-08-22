@@ -1,33 +1,34 @@
 #ifndef REDISHELPER_H
 #define REDISHELPER_H
-#include "RedisValue.h"
-#include "SkipList.h"
 #include <memory>
 #include <string>
 #include <vector>
+
+#include "RedisValue.h"
+#include "SkipList.h"
 //#define DEFAULT_DB_FOLDER "data_files"
 #define DATABASE_FILE_NAME "db"
 #define DATABASE_FILE_NUMBER 15
 //增删改查操作
 class RedisHelper {
-private:
+ private:
   // static const std::string DEFAULT_DB_FOLDER;
   // static const std::string DATABASE_FILE_NAME;
   // static const int DATABASE_FILE_NUMBER;
-  std::string dataBaseIndex = "0"; //当前数据库索引
+  std::string dataBaseIndex = "0";  //当前数据库索引
   std::shared_ptr<SkipList<std::string, RedisValue>> redisDataBase =
-      std::make_shared<SkipList<std::string, RedisValue>>(); //数据库
-public:
+      std::make_shared<SkipList<std::string, RedisValue>>();  //数据库
+ public:
   RedisHelper();
   ~RedisHelper();
 
-private:
+ private:
   //从文件中加载数据  持久性保存数据
   void loadData(std::string loadPath);
   std::string getFilePath();
 
-public:
-  void flush(); //写入文件
+ public:
+  void flush();  //写入文件
   //选择数据库
   std::string select(int index);
 

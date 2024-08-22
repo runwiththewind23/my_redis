@@ -2,200 +2,201 @@
 #define COMMANDPARSER_H
 
 #include <memory>
-#include <vector>
 #include <string>
-#include "RedisHelper.h" 
+#include <vector>
+
+#include "RedisHelper.h"
 
 /*
     CommandParser 是解析器的基类，它定义了解析器的接口
 */
 class CommandParser {
-protected:
-    static std::shared_ptr<RedisHelper> redisHelper; //静态成员变量，所有解析器共享一个RedisHelper 
-public:
-    static void setRedisHelper(std::shared_ptr<RedisHelper> helper) { redisHelper = helper; }
-    static std::shared_ptr<RedisHelper> getRedisHelper() { return redisHelper; }  //饿汉模式
-    virtual std::string parse(std::vector<std::string>& tokens) = 0; //纯虚函数，解析命令
+ protected:
+  static std::shared_ptr<RedisHelper>
+      redisHelper;  //静态成员变量，所有解析器共享一个RedisHelper
+ public:
+  static void setRedisHelper(std::shared_ptr<RedisHelper> helper) {
+    redisHelper = helper;
+  }
+  static std::shared_ptr<RedisHelper> getRedisHelper() {
+    return redisHelper;
+  }  //饿汉模式
+  virtual std::string parse(
+      std::vector<std::string>& tokens) = 0;  //纯虚函数，解析命令
 };
 
-// SelectParser 
+// SelectParser
 class SelectParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// SetParser 
+// SetParser
 class SetParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// SetnxParser 
+// SetnxParser
 class SetnxParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// SetexParser 
+// SetexParser
 class SetexParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// GetParser 
+// GetParser
 class GetParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// KeysParser 
+// KeysParser
 class KeysParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// DBSizeParser 
+// DBSizeParser
 class DBSizeParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// ExistsParser 
+// ExistsParser
 class ExistsParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// DelParser 
+// DelParser
 class DelParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// RenameParser 
+// RenameParser
 class RenameParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// IncrParser 
+// IncrParser
 class IncrParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// IncrbyParser 
+// IncrbyParser
 class IncrbyParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// IncrbyfloatParser 
+// IncrbyfloatParser
 class IncrbyfloatParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// DecrParser 
+// DecrParser
 class DecrParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// DecrbyParser 
+// DecrbyParser
 class DecrbyParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// MSetParser 
+// MSetParser
 class MSetParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// MGetParser 
+// MGetParser
 class MGetParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// StrlenParser 
+// StrlenParser
 class StrlenParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-// AppendParser 
+// AppendParser
 class AppendParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
 // LPushParser
 class LPushParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
 // RPushParser
 class RPushParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
 // LPopParser
 class LPopParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
 // RPopParser
 class RPopParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-//LRangeParser
+// LRangeParser
 class LRangeParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
 // HSetParser
 class HSetParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
 // HGetParser
 class HGetParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
 // HDelParser
 class HDelParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
 // HKeysParser
 class HKeysParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
 // HValsParser
 class HValsParser : public CommandParser {
-public:
-    std::string parse(std::vector<std::string>& tokens) override;
+ public:
+  std::string parse(std::vector<std::string>& tokens) override;
 };
 
-
-
-
-
-
-
-#endif // COMMANDPARSER_H
+#endif  // COMMANDPARSER_H
