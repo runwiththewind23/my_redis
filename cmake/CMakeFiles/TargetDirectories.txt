@@ -1,4 +1,0 @@
-/home/sxd/My_Redis/cmake/CMakeFiles/server.dir
-/home/sxd/My_Redis/cmake/CMakeFiles/client.dir
-/home/sxd/My_Redis/cmake/CMakeFiles/edit_cache.dir
-/home/sxd/My_Redis/cmake/CMakeFiles/rebuild_cache.dir
