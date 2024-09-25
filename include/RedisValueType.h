@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 
-#include "Dump.h"
+#include "Dump.hpp"
 #include "Parse.h"
 #include "RedisValue.h"
 

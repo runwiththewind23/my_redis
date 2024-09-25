@@ -1,5 +1,4 @@
-#ifndef DUMP_H
-#define DUMP_H
+#pragma once
 #include <cmath>
 #include <string>
 
@@ -104,5 +103,3 @@ static void dump(const RedisValue::object &values, std::string &out) {
   }
   out += "}";
 }
-
-#endif

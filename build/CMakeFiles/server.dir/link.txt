@@ -1,0 +1,1 @@
+/usr/bin/c++  -g -Wall -g CMakeFiles/server.dir/src/server.cpp.o CMakeFiles/server.dir/src/RedisHelper.cpp.o CMakeFiles/server.dir/src/CommandParser.cpp.o CMakeFiles/server.dir/src/RedisServer.cpp.o CMakeFiles/server.dir/src/ParserFlyweightFactory.cpp.o CMakeFiles/server.dir/src/Parse.cpp.o CMakeFiles/server.dir/src/RedisValue.cpp.o -o server  -lzmq

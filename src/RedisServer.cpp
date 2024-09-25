@@ -85,7 +85,7 @@ string RedisServer::executeTransaction(std::queue<std::string>& commandsQueue) {
     }
   }
   string res = "";
-  for (int i = 0; i < responseMessagesList.size(); i++) {
+  for (auto i = 0u; i < responseMessagesList.size(); i++) {
     std::string responseMessage =
         std::to_string(i + 1) + ")" + responseMessagesList[i];
     res += responseMessage;

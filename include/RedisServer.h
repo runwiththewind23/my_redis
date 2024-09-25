@@ -27,8 +27,8 @@
 using namespace std;
 class RedisServer {
  private:
-  std::unique_ptr<ParserFlyweightFactory> flyweightFactory;  // 解析器工厂
   int port;
+  std::unique_ptr<ParserFlyweightFactory> flyweightFactory;  // 解析器工厂
   std::atomic<bool> stop{false};
   pid_t pid;
   std::string logoFilePath;

@@ -460,26 +460,22 @@ std::string RedisHelper::hset(const std::string& key,
       }
     }
     redisDataBase->addItem(key, valueMap);
-  } else {
-    if (currentNode->value.type() != RedisValue::OBJECT) {
-      resMessage = "The key:" + key + " " +
-                   "already exists and the value is not a hashtable!";
-      return resMessage;
-    } else {
-      RedisValue::object& valueMap = currentNode->value.objectItems();
-      for (auto i = 0u; i < filed.size(); i += 2) {
-        std::string hkey = filed[i];
-        RedisValue hval = filed[i + 1];
-        if (!valueMap.count(hkey)) {
-          valueMap[hkey] = hval;
-          count++;
-        }
+  } else if (currentNode->value.type() == RedisValue::OBJECT) {
+    RedisValue::object& valueMap = currentNode->value.objectItems();
+    for (size_t i = 0; i < filed.size(); i += 2) {
+      std::string hkey = filed[i];
+      RedisValue hval = filed[i + 1];
+      if (!valueMap.count(hkey)) {
+        valueMap[hkey] = hval;
+        count++;
       }
     }
+  } else {
+    return "The key: " + key +
+           " already exists and the value is not a hashtable!";
   }
 
-  resMessage = "(integer) " + std::to_string(count);
-  return resMessage;
+  return "(integer) " + std::to_string(count);
 }
 std::string RedisHelper::hget(const std::string& key,
                               const std::string& filed) {
@@ -567,3 +563,7 @@ std::string RedisHelper::hvals(const std::string& key) {
   }
   return resMessage;
 }
+/*
+std::string sadd(const std::string& key) {
+  auto currentNode = redisDataBase->searchItem(key);
+}*/

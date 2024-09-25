@@ -215,8 +215,6 @@ std::string LRangeParser::parse(std::vector<std::string>& tokens) {
     return "wrong number of arguments for LPOP.";
   }
   try {
-    int start = std::stoi(tokens[2]);
-    int end = std::stoi(tokens[3]);
   } catch (std::invalid_argument const& e) {
     return tokens[2] + " or " + tokens[3] + " is not a integer type";
   }

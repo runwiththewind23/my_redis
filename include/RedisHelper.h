@@ -106,9 +106,9 @@ class RedisHelper {
                    const std::vector<std::string> &filed);
   std::string hkeys(const std::string &key);
   std::string hvals(const std::string &key);
-  //set操作
-  //SADD: 添加元素
-
+  // set操作
+  // SADD: 添加元素
+  std::string sadd(const std::string &key);
 };
 
 #endif

@@ -4,9 +4,11 @@
 #include <sstream>
 #include <string>
 
+#include <LRU.hpp>
 #include <zmq.hpp>  //这个是zeroMQ的头文件
 
 #include "Serializer.hpp"  //这个是序列化和反序列化的头文件
+#include "ThreadPool.hpp"
 
 //模板的别名，需要一个外敷类
 // type_xx<int>::type a = 10;
@@ -76,11 +78,13 @@ class buttonrpc {
   ~buttonrpc();
 
   // network
-  void as_client(std::string ip, int port);  //客户端
-  void as_server(int port);                  //服务器
-  void send(zmq::message_t& data);           //发送数据
-  void recv(zmq::message_t& data);           //接收数据
-  void set_timeout(uint32_t ms);             //设置超时时间
+  void as_client(std::string ip, int port);                   //客户端
+  void as_server(int port);                                   //服务器
+  void send(zmq::message_t& data);                            //发送数据
+  void recv(zmq::message_t& data);                            //接收数据
+  void send(zmq::message_t& identity, zmq::message_t& data);  //发送数据
+  void recv(zmq::message_t& identity, zmq::message_t& data);
+  void set_timeout(uint32_t ms);  //设置超时时间
   void run();
 
  public:
@@ -244,9 +248,8 @@ class buttonrpc {
   std::map<std::string, std::function<void(Serializer*, const char*, int)>>
       m_handlers;  //函数映射表
 
-  zmq::context_t m_context;  //上下文
-  zmq::socket_t* m_socket;   //套接字
-
+  zmq::context_t m_context;   //上下文
+  zmq::socket_t* m_socket;    //套接字
   rpc_err_code m_error_code;  //错误码
   int m_role;                 //角色
 };
@@ -262,58 +265,76 @@ buttonrpc::~buttonrpc() {
 // network
 void buttonrpc::as_client(std::string ip, int port) {
   m_role = RPC_CLIENT;
-  m_socket = new zmq::socket_t(
-      m_context, ZMQ_REQ);  //创建一个套接字 参数为上下文和套接字类型
-                            ////ZMQ_REQ 用于请求-应答模式
-  ostringstream os;  //创建一个字符串流
+  m_socket =
+      new zmq::socket_t(m_context, ZMQ_DEALER);  // 改为 ZMQ_DEALER 套接字
+  ostringstream os;
   os << "tcp://" << ip << ":" << port;
-  m_socket->connect(os.str());  //连接到指定的地址
+  m_socket->connect(os.str());  // 连接到服务器
 }
 
 void buttonrpc::as_server(int port) {
-  m_role = RPC_SERVER;  //设置角色为服务器
-  m_socket = new zmq::socket_t(
-      m_context, ZMQ_REP);  //创建一个套接字 参数为上下文和套接字类型
-                            ////ZMQ_REP 用于请求-应答模式
+  m_role = RPC_SERVER;
+  m_socket =
+      new zmq::socket_t(m_context, ZMQ_ROUTER);  // 改为 ZMQ_ROUTER 套接字
   ostringstream os;
   os << "tcp://*:" << port;
-  m_socket->bind(os.str());  //绑定到指定的地址
+  m_socket->bind(os.str());  // 绑定到指定的地址
 }
 
 void buttonrpc::send(zmq::message_t& data) {
-  m_socket->send(data, zmq::send_flags::none);  //发送数据
+  m_socket->send(data);  //发送数据
 }
 
 void buttonrpc::recv(zmq::message_t& data) {
-  m_socket->recv(data, zmq::recv_flags::none);  //接收数据
+  m_socket->recv(&data);  //接收数据
+}
+void buttonrpc::send(zmq::message_t& identity, zmq::message_t& data) {
+  // 先发送客户端标识符
+  m_socket->send(identity, zmq::send_flags::sndmore);  // 设置为多部分消息发送
+  // 再发送实际数据
+  m_socket->send(data, zmq::send_flags::none);
 }
 
+void buttonrpc::recv(zmq::message_t& identity, zmq::message_t& data) {
+  // 先接收客户端标识符
+  m_socket->recv(identity, zmq::recv_flags::none);
+  // 再接收实际数据
+  m_socket->recv(data, zmq::recv_flags::none);
+}
 inline void buttonrpc::set_timeout(uint32_t ms) {
-  // only client can set
-  // if (m_role == RPC_CLIENT) {
-  // 	m_socket->setsockopt(ZMQ_RCVTIMEO, ms); //设置接收超时时间
-  // }
+  if (m_role == RPC_CLIENT) {
+    m_socket->setsockopt(ZMQ_RCVTIMEO, &ms, sizeof(ms));  // 设置接收超时
+    m_socket->setsockopt(ZMQ_SNDTIMEO, &ms, sizeof(ms));  // 设置发送超时
+  }
 }
 
 void buttonrpc::run() {
-  if (m_role != RPC_SERVER) {  //如果不是服务器
+  if (m_role != RPC_SERVER) {
     return;
   }
+
+  zmq::pollitem_t items[] = {{static_cast<void*>(*m_socket), 0, ZMQ_POLLIN, 0}};
+
   while (1) {
-    zmq::message_t data;  //创建一个消息
-    recv(data);           //接收数据 没消息就阻塞
-    StreamBuffer iodev((char*)data.data(), data.size());  //创建一个流缓冲区
-    Serializer ds(iodev);  //创建一个序列化器
+    zmq::poll(items, 1, -1);  // 使用 zmq::poll 等待事件
 
-    std::string funname;
-    ds >> funname;  //读取函数名
-    Serializer* r =
-        call_(funname, ds.current(), ds.size() - funname.size());  //调用函数
+    if (items[0].revents & ZMQ_POLLIN) {
+      zmq::message_t identity;
+      zmq::message_t data;
+      recv(identity, data);  // 接收数据
 
-    zmq::message_t retmsg(r->size());             //创建一个消息
-    memcpy(retmsg.data(), r->data(), r->size());  //拷贝数据
-    send(retmsg);                                 //发送数据
-    delete r;
+      StreamBuffer iodev((char*)data.data(), data.size());
+      Serializer ds(iodev);
+
+      std::string funname;
+      ds >> funname;
+      Serializer* r = call_(funname, ds.current(), ds.size() - funname.size());
+
+      zmq::message_t retmsg(r->size());
+      memcpy(retmsg.data(), r->data(), r->size());
+      send(identity, retmsg);
+      delete r;
+    }
   }
 }
 

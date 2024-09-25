@@ -1,0 +1,50 @@
+[
+{
+  "directory": "/home/sxd/My_Redis/build",
+  "command": "/usr/bin/c++ -DDEFAULT_DB_FOLDER=\\\"/home/sxd/My_Redis/data_files\\\" -I/home/sxd/My_Redis/include  -g -Wall -g -std=gnu++11 -o CMakeFiles/server.dir/src/server.cpp.o -c /home/sxd/My_Redis/src/server.cpp",
+  "file": "/home/sxd/My_Redis/src/server.cpp",
+  "output": "CMakeFiles/server.dir/src/server.cpp.o"
+},
+{
+  "directory": "/home/sxd/My_Redis/build",
+  "command": "/usr/bin/c++ -DDEFAULT_DB_FOLDER=\\\"/home/sxd/My_Redis/data_files\\\" -I/home/sxd/My_Redis/include  -g -Wall -g -std=gnu++11 -o CMakeFiles/server.dir/src/RedisHelper.cpp.o -c /home/sxd/My_Redis/src/RedisHelper.cpp",
+  "file": "/home/sxd/My_Redis/src/RedisHelper.cpp",
+  "output": "CMakeFiles/server.dir/src/RedisHelper.cpp.o"
+},
+{
+  "directory": "/home/sxd/My_Redis/build",
+  "command": "/usr/bin/c++ -DDEFAULT_DB_FOLDER=\\\"/home/sxd/My_Redis/data_files\\\" -I/home/sxd/My_Redis/include  -g -Wall -g -std=gnu++11 -o CMakeFiles/server.dir/src/CommandParser.cpp.o -c /home/sxd/My_Redis/src/CommandParser.cpp",
+  "file": "/home/sxd/My_Redis/src/CommandParser.cpp",
+  "output": "CMakeFiles/server.dir/src/CommandParser.cpp.o"
+},
+{
+  "directory": "/home/sxd/My_Redis/build",
+  "command": "/usr/bin/c++ -DDEFAULT_DB_FOLDER=\\\"/home/sxd/My_Redis/data_files\\\" -I/home/sxd/My_Redis/include  -g -Wall -g -std=gnu++11 -o CMakeFiles/server.dir/src/RedisServer.cpp.o -c /home/sxd/My_Redis/src/RedisServer.cpp",
+  "file": "/home/sxd/My_Redis/src/RedisServer.cpp",
+  "output": "CMakeFiles/server.dir/src/RedisServer.cpp.o"
+},
+{
+  "directory": "/home/sxd/My_Redis/build",
+  "command": "/usr/bin/c++ -DDEFAULT_DB_FOLDER=\\\"/home/sxd/My_Redis/data_files\\\" -I/home/sxd/My_Redis/include  -g -Wall -g -std=gnu++11 -o CMakeFiles/server.dir/src/ParserFlyweightFactory.cpp.o -c /home/sxd/My_Redis/src/ParserFlyweightFactory.cpp",
+  "file": "/home/sxd/My_Redis/src/ParserFlyweightFactory.cpp",
+  "output": "CMakeFiles/server.dir/src/ParserFlyweightFactory.cpp.o"
+},
+{
+  "directory": "/home/sxd/My_Redis/build",
+  "command": "/usr/bin/c++ -DDEFAULT_DB_FOLDER=\\\"/home/sxd/My_Redis/data_files\\\" -I/home/sxd/My_Redis/include  -g -Wall -g -std=gnu++11 -o CMakeFiles/server.dir/src/Parse.cpp.o -c /home/sxd/My_Redis/src/Parse.cpp",
+  "file": "/home/sxd/My_Redis/src/Parse.cpp",
+  "output": "CMakeFiles/server.dir/src/Parse.cpp.o"
+},
+{
+  "directory": "/home/sxd/My_Redis/build",
+  "command": "/usr/bin/c++ -DDEFAULT_DB_FOLDER=\\\"/home/sxd/My_Redis/data_files\\\" -I/home/sxd/My_Redis/include  -g -Wall -g -std=gnu++11 -o CMakeFiles/server.dir/src/RedisValue.cpp.o -c /home/sxd/My_Redis/src/RedisValue.cpp",
+  "file": "/home/sxd/My_Redis/src/RedisValue.cpp",
+  "output": "CMakeFiles/server.dir/src/RedisValue.cpp.o"
+},
+{
+  "directory": "/home/sxd/My_Redis/build",
+  "command": "/usr/bin/c++ -DDEFAULT_DB_FOLDER=\\\"/home/sxd/My_Redis/data_files\\\" -I/home/sxd/My_Redis/include  -g -Wall -g -std=gnu++11 -o CMakeFiles/client.dir/src/client.cpp.o -c /home/sxd/My_Redis/src/client.cpp",
+  "file": "/home/sxd/My_Redis/src/client.cpp",
+  "output": "CMakeFiles/client.dir/src/client.cpp.o"
+}
+]
